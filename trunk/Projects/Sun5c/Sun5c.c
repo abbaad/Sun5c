@@ -35,7 +35,7 @@
  *  is responsible for the initial application hardware configuration.
  */
 
-#include "Keyboard.h"
+#include "Sun5c.h"
 
 /** Indicates what report mode the host has requested, true for normal HID reporting mode, false for special boot
  *  protocol reporting mode.
@@ -82,10 +82,8 @@ void SetupHardware(void)
 	clock_prescale_set(clock_div_1);
 
 	/* Hardware Initialization */
-	Joystick_Init();
 	LEDs_Init();
 	USB_Init();
-	Buttons_Init();
 }
 
 /** Event handler for the USB_Connect event. This indicates that the device is enumerating via the status LEDs and
@@ -242,9 +240,6 @@ void EVENT_USB_Device_StartOfFrame(void)
  */
 void CreateKeyboardReport(USB_KeyboardReport_Data_t* const ReportData)
 {
-	uint8_t JoyStatus_LCL     = Joystick_GetStatus();
-	uint8_t ButtonStatus_LCL  = Buttons_GetStatus();
-
 	uint8_t UsedKeyCodes      = 0;
 
 	/* Clear the report contents */
@@ -253,21 +248,7 @@ void CreateKeyboardReport(USB_KeyboardReport_Data_t* const ReportData)
 	/* Make sent key uppercase by indicating that the left shift key is pressed */
 	ReportData->Modifier = HID_KEYBOARD_MODIFER_LEFTSHIFT;
 
-	if (JoyStatus_LCL & JOY_UP)
-	  ReportData->KeyCode[UsedKeyCodes++] = HID_KEYBOARD_SC_A;
-	else if (JoyStatus_LCL & JOY_DOWN)
-	  ReportData->KeyCode[UsedKeyCodes++] = HID_KEYBOARD_SC_B;
-
-	if (JoyStatus_LCL & JOY_LEFT)
-	  ReportData->KeyCode[UsedKeyCodes++] = HID_KEYBOARD_SC_C;
-	else if (JoyStatus_LCL & JOY_RIGHT)
-	  ReportData->KeyCode[UsedKeyCodes++] = HID_KEYBOARD_SC_D;
-
-	if (JoyStatus_LCL & JOY_PRESS)
-	  ReportData->KeyCode[UsedKeyCodes++] = HID_KEYBOARD_SC_E;
-
-	if (ButtonStatus_LCL & BUTTONS_BUTTON1)
-	  ReportData->KeyCode[UsedKeyCodes++] = HID_KEYBOARD_SC_F;
+	ReportData->KeyCode[UsedKeyCodes++] = HID_KEYBOARD_SC_A;
 }
 
 /** Processes a received LED report, and updates the board LEDs states to match.

@@ -60,7 +60,7 @@
 
 
 # MCU name
-MCU = at90usb1287
+MCU = at90usb82
 
 
 # Target architecture (see library "Board Types" documentation).
@@ -70,7 +70,7 @@ ARCH = AVR8
 # Target board (see library "Board Types" documentation, NONE for projects not requiring
 # LUFA board drivers). If USER is selected, put custom board drivers in a directory called
 # "Board" inside the application directory.
-BOARD = USBKEY
+BOARD = SPARKFUN8U2
 
 
 # Processor frequency.
@@ -84,7 +84,7 @@ BOARD = USBKEY
 #     does not *change* the processor frequency - it should merely be updated to
 #     reflect the processor speed set externally so that the code can use accurate
 #     software delays.
-F_CPU = 8000000
+F_CPU = 16000000
 
 
 # Input clock frequency.
@@ -106,7 +106,7 @@ FORMAT = ihex
 
 
 # Target file name (without extension).
-TARGET = Keyboard
+TARGET = Sun5c
 
 
 # Object files directory
@@ -116,7 +116,7 @@ OBJDIR = .
 
 
 # Path to the LUFA library
-LUFA_PATH = ../../../..
+LUFA_PATH = ../..
 
 
 # LUFA library compile-time options and predefined tokens
