@@ -251,8 +251,9 @@ void CreateKeyboardReport(USB_KeyboardReport_Data_t* const ReportData)
 	memset(ReportData, 0, sizeof(USB_KeyboardReport_Data_t));
 
 	if(Serial_IsCharReceived()) {
-		if(byte = eeprom_read_byte(scancodes + (Serial_ReceiveByte() & SUNKBD_KEY)))
-			ReportData->KeyCode[UsedKeyCodes++] = byte;
+		if((byte = Serial_ReceiveByte()) < SUNKBD_KEY)	// it's a make code
+			if(byte = eeprom_read_byte(scancodes + byte)) // it's in the table
+				ReportData->KeyCode[UsedKeyCodes++] = byte;
 	}
 }
 
