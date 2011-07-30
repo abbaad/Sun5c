@@ -78,10 +78,14 @@ void SetupHardware(void)
 	MCUSR &= ~(1 << WDRF);
 	wdt_disable();
 
+	DDRD  |= 1 << 7;
+	PORTD |= 1 << 7;
+
 	/* Disable clock division */
 	clock_prescale_set(clock_div_1);
 
 	/* Hardware Initialization */
+	Serial_Init(1200, false);
 	LEDs_Init();
 	USB_Init();
 }
@@ -241,14 +245,15 @@ void EVENT_USB_Device_StartOfFrame(void)
 void CreateKeyboardReport(USB_KeyboardReport_Data_t* const ReportData)
 {
 	uint8_t UsedKeyCodes      = 0;
+	uint8_t byte;
 
 	/* Clear the report contents */
 	memset(ReportData, 0, sizeof(USB_KeyboardReport_Data_t));
 
-	/* Make sent key uppercase by indicating that the left shift key is pressed */
-	ReportData->Modifier = HID_KEYBOARD_MODIFER_LEFTSHIFT;
-
-	ReportData->KeyCode[UsedKeyCodes++] = HID_KEYBOARD_SC_A;
+	if(Serial_IsCharReceived()) {
+		if(byte = eeprom_read_byte(scancodes + (Serial_ReceiveByte() & SUNKBD_KEY)))
+			ReportData->KeyCode[UsedKeyCodes++] = byte;
+	}
 }
 
 /** Processes a received LED report, and updates the board LEDs states to match.
