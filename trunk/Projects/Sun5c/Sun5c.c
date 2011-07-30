@@ -35,6 +35,7 @@
  *  is responsible for the initial application hardware configuration.
  */
 
+#include <string.h>
 #include "Sun5c.h"
 
 /** Indicates what report mode the host has requested, true for normal HID reporting mode, false for special boot
@@ -238,23 +239,98 @@ void EVENT_USB_Device_StartOfFrame(void)
 	  IdleMSRemaining--;
 }
 
+inline void GeneratePhantom(USB_KeyboardReport_Data_t* const ReportData)
+{
+	int i = 0;
+	while(i < MAX_KEYS)
+		ReportData->KeyCode[i++] = HID_KEYBOARD_SC_ERROR_ROLLOVER;
+}
+
 /** Fills the given HID report data structure with the next HID report to send to the host.
  *
  *  \param[out] ReportData  Pointer to a HID report data structure to be filled
  */
 void CreateKeyboardReport(USB_KeyboardReport_Data_t* const ReportData)
 {
-	uint8_t UsedKeyCodes      = 0;
-	uint8_t byte;
+	static uint8_t modifiers;
+	static uint8_t keys[MAX_KEYS];
+	uint8_t byte, *key;
 
 	/* Clear the report contents */
 	memset(ReportData, 0, sizeof(USB_KeyboardReport_Data_t));
 
 	if(Serial_IsCharReceived()) {
-		if((byte = Serial_ReceiveByte()) < SUNKBD_KEY)	// it's a make code
-			if(byte = eeprom_read_byte(scancodes + byte)) // it's in the table
-				ReportData->KeyCode[UsedKeyCodes++] = byte;
+		if((byte = Serial_ReceiveByte()) < SUNKBD_KEY) { // it's a make code
+			if(byte = eeprom_read_byte(scancodes + byte)) { // it's in the table
+				switch (byte) {
+					case HID_KEYBOARD_SC_LEFT_CONTROL:
+						modifiers |= HID_KEYBOARD_MODIFER_LEFTCTRL;
+						break;
+					case HID_KEYBOARD_SC_LEFT_SHIFT:
+						modifiers |= HID_KEYBOARD_MODIFER_LEFTSHIFT;
+						break;
+					case HID_KEYBOARD_SC_LEFT_ALT:
+						modifiers |= HID_KEYBOARD_MODIFER_LEFTALT;
+						break;
+					case HID_KEYBOARD_SC_LEFT_GUI:
+						modifiers |= HID_KEYBOARD_MODIFER_LEFTGUI;
+						break;
+					case HID_KEYBOARD_SC_RIGHT_SHIFT:
+						modifiers |= HID_KEYBOARD_MODIFER_RIGHTSHIFT;
+						break;
+					case HID_KEYBOARD_SC_RIGHT_ALT:
+						modifiers |= HID_KEYBOARD_MODIFER_RIGHTALT;
+						break;
+					case HID_KEYBOARD_SC_RIGHT_GUI:
+						modifiers |= HID_KEYBOARD_MODIFER_RIGHTGUI;
+						break;
+					default: // not a modifier
+						if(key = memchr(keys, 0, MAX_KEYS)) // there's an empty spot
+							*key = byte;
+						else {
+							ReportData->Modifier = modifiers;
+							GeneratePhantom(ReportData);
+							return;
+						}
+				}
+			}
+		} else { // it's a break code
+			if(byte = eeprom_read_byte(scancodes + (byte & SUNKBD_KEY))) {
+				switch (byte) {
+					case HID_KEYBOARD_SC_LEFT_CONTROL:
+						modifiers &= ~HID_KEYBOARD_MODIFER_LEFTCTRL;
+						break;
+					case HID_KEYBOARD_SC_LEFT_SHIFT:
+						modifiers &= ~HID_KEYBOARD_MODIFER_LEFTSHIFT;
+						break;
+					case HID_KEYBOARD_SC_LEFT_ALT:
+						modifiers &= ~HID_KEYBOARD_MODIFER_LEFTALT;
+						break;
+					case HID_KEYBOARD_SC_LEFT_GUI:
+						modifiers &= ~HID_KEYBOARD_MODIFER_LEFTGUI;
+						break;
+					case HID_KEYBOARD_SC_RIGHT_SHIFT:
+						modifiers &= ~HID_KEYBOARD_MODIFER_RIGHTSHIFT;
+						break;
+					case HID_KEYBOARD_SC_RIGHT_ALT:
+						modifiers &= ~HID_KEYBOARD_MODIFER_RIGHTALT;
+						break;
+					case HID_KEYBOARD_SC_RIGHT_GUI:
+						modifiers &= ~HID_KEYBOARD_MODIFER_RIGHTGUI;
+						break;
+					default: // not a modifier
+						if(key = memchr(keys, byte, MAX_KEYS))
+							*key = 0;
+				}
+			}
+		}
 	}
+
+	ReportData->Modifier = modifiers;
+	byte = 0;
+	for(key = keys; key < keys + MAX_KEYS; key++)
+		if(*key)
+			ReportData->KeyCode[byte++] = *key;
 }
 
 /** Processes a received LED report, and updates the board LEDs states to match.

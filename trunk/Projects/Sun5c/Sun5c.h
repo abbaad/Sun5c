@@ -41,6 +41,7 @@
 		#include <avr/io.h>
 		#include <avr/wdt.h>
 		#include <avr/power.h>
+		#include <avr/eeprom.h>
 		#include <avr/interrupt.h>
 		#include <stdbool.h>
 		#include <string.h>
@@ -51,7 +52,6 @@
 		#include <LUFA/Drivers/USB/USB.h>
 		#include <LUFA/Drivers/Board/LEDs.h>
 		#include <LUFA/Drivers/Peripheral/Serial.h>
-		#include <avr/eeprom.h>
 
 	/* Macros: */
 		/** LED mask for the library LED driver, to indicate that the USB interface is not ready. */
@@ -66,7 +66,13 @@
 		/** LED mask for the library LED driver, to indicate that an error has occurred in the USB interface. */
 		#define LEDMASK_USB_ERROR           (LEDS_LED1 | LEDS_LED3)
 
+		/** The maximum number of simultaneous keys. According to the Sun Keyboard spec, the Type5c implements
+		 *  full N-key Rollover (i.e., all key depressions and releases correctly detected in any sequence
+		 *  regardless of how many keys are being depressed). For now, we will keep this at 6 to be compatible
+		 *  witht the Boot protocol (and the existing code), but in the future, this will increase to 10.  */
+		#define MAX_KEYS		6
 
+		/** The Sun scancode for 'Idle' (meaning all keys are up). Also the maximum value for make events */
 		#define SUNKBD_KEY		0x7f
 
 	/* Function Prototypes: */
