@@ -261,7 +261,7 @@ void CreateKeyboardReport(USB_KeyboardReport_Data_t* const ReportData)
 
 	if(Serial_IsCharReceived()) {
 		if((byte = Serial_ReceiveByte()) < SUNKBD_KEY) { // it's a make code
-			if(byte = eeprom_read_byte(scancodes + byte)) { // it's in the table
+			if((byte = eeprom_read_byte(scancodes + byte))) { // it's in the table
 				switch (byte) {
 					case HID_KEYBOARD_SC_LEFT_CONTROL:
 						modifiers |= HID_KEYBOARD_MODIFER_LEFTCTRL;
@@ -285,7 +285,7 @@ void CreateKeyboardReport(USB_KeyboardReport_Data_t* const ReportData)
 						modifiers |= HID_KEYBOARD_MODIFER_RIGHTGUI;
 						break;
 					default: // not a modifier
-						if(key = memchr(keys, 0, MAX_KEYS)) // there's an empty spot
+						if((key = memchr(keys, 0, MAX_KEYS))) // there's an empty spot
 							*key = byte;
 						else {
 							ReportData->Modifier = modifiers;
@@ -295,7 +295,7 @@ void CreateKeyboardReport(USB_KeyboardReport_Data_t* const ReportData)
 				}
 			}
 		} else { // it's a break code
-			if(byte = eeprom_read_byte(scancodes + (byte & SUNKBD_KEY))) {
+			if((byte = eeprom_read_byte(scancodes + (byte & SUNKBD_KEY)))) {
 				switch (byte) {
 					case HID_KEYBOARD_SC_LEFT_CONTROL:
 						modifiers &= ~HID_KEYBOARD_MODIFER_LEFTCTRL;
@@ -319,7 +319,7 @@ void CreateKeyboardReport(USB_KeyboardReport_Data_t* const ReportData)
 						modifiers &= ~HID_KEYBOARD_MODIFER_RIGHTGUI;
 						break;
 					default: // not a modifier
-						if(key = memchr(keys, byte, MAX_KEYS))
+						if((key = memchr(keys, byte, MAX_KEYS)))
 							*key = 0;
 				}
 			}

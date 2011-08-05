@@ -103,8 +103,11 @@
 		/** Constant for a keyboard output report LED byte, indicating that the host's SCROLL LOCK mode is currently set. */
 		#define HID_KEYBOARD_LED_SCROLLLOCK                       (1 << 2)
 
-		/** Constant for a keyboard output report LED byte, indicating that the host's KATANA mode is currently set. */
-		#define HID_KEYBOARD_LED_KATANA                           (1 << 3)
+		/** Constant for a keyboard output report LED byte, indicating that the host's COMPOSE mode is currently set. */
+		#define HID_KEYBOARD_LED_COMPOSE                          (1 << 3)
+
+		/** Constant for a keyboard output report LED byte, indicating that the host's KANA mode is currently set. */
+		#define HID_KEYBOARD_LED_KANA                             (1 << 4)
 		//@}
 
 		/** \name Keyboard Standard Report Key Scan-codes */
@@ -209,6 +212,7 @@
 		#define HID_KEYBOARD_SC_KEYPAD_0_AND_INSERT               0x62
 		#define HID_KEYBOARD_SC_KEYPAD_DOT_AND_DELETE             0x63
 		#define HID_KEYBOARD_SC_NON_US_BACKSLASH_AND_PIPE         0x64		
+		#define HID_KEYBOARD_SC_APPLICATION                       0x65
 		#define HID_KEYBOARD_SC_POWER                             0x66
 		#define HID_KEYBOARD_SC_EQUAL_SIGN                        0x67
 		#define HID_KEYBOARD_SC_F13                               0x68
@@ -225,7 +229,7 @@
 		#define HID_KEYBOARD_SC_F24                               0x73
 		#define HID_KEYBOARD_SC_EXECUTE                           0x74
 		#define HID_KEYBOARD_SC_HELP                              0x75
-		#define HID_KEYBOARD_SC_MANU                              0x76
+		#define HID_KEYBOARD_SC_MENU                              0x76
 		#define HID_KEYBOARD_SC_SELECT                            0x77
 		#define HID_KEYBOARD_SC_STOP                              0x78
 		#define HID_KEYBOARD_SC_AGAIN                             0x79
