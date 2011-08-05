@@ -49,22 +49,9 @@
 
 		#include <LUFA/Version.h>
 		#include <LUFA/Drivers/USB/USB.h>
-		#include <LUFA/Drivers/Board/LEDs.h>
 		#include <LUFA/Drivers/Peripheral/Serial.h>
 
 	/* Macros: */
-		/** LED mask for the library LED driver, to indicate that the USB interface is not ready. */
-		#define LEDMASK_USB_NOTREADY        LEDS_LED1
-
-		/** LED mask for the library LED driver, to indicate that the USB interface is enumerating. */
-		#define LEDMASK_USB_ENUMERATING     (LEDS_LED2 | LEDS_LED3)
-
-		/** LED mask for the library LED driver, to indicate that the USB interface is ready. */
-		#define LEDMASK_USB_READY           (LEDS_LED2 | LEDS_LED4)
-
-		/** LED mask for the library LED driver, to indicate that an error has occurred in the USB interface. */
-		#define LEDMASK_USB_ERROR           (LEDS_LED1 | LEDS_LED3)
-
 		/** The maximum number of simultaneous keys. According to the Sun Keyboard spec, the Type5c implements
 		 *  full N-key Rollover (i.e., all key depressions and releases correctly detected in any sequence
 		 *  regardless of how many keys are being depressed). For now, we will keep this at 6 to be compatible
