@@ -339,19 +339,8 @@ void CreateKeyboardReport(USB_KeyboardReport_Data_t* const ReportData)
  */
 void ProcessLEDReport(const uint8_t LEDReport)
 {
-	uint8_t LEDMask = LEDS_LED2;
-
-	if (LEDReport & HID_KEYBOARD_LED_NUMLOCK)
-	  LEDMask |= LEDS_LED1;
-
-	if (LEDReport & HID_KEYBOARD_LED_CAPSLOCK)
-	  LEDMask |= LEDS_LED3;
-
-	if (LEDReport & HID_KEYBOARD_LED_SCROLLLOCK)
-	  LEDMask |= LEDS_LED4;
-
-	/* Set the status LEDs to the current Keyboard LED status */
-	LEDs_SetAllLEDs(LEDMask);
+	Serial_SendByte(SUNKBD_LED);
+	Serial_SendByte(HID_LED_TO_SUN(LEDReport));
 }
 
 /** Sends the next HID report to the host, via the keyboard data endpoint. */

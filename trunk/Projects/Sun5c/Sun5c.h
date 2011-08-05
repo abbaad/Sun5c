@@ -75,6 +75,25 @@
 		 *  the mask to get a make code from a break code. */
 		#define SUNKBD_KEY		0x7f
 
+		/** The Sun command from the computer to the keyboard indicating LEDs in the following byte */
+		#define SUNKBD_LED		0x0e
+
+		/* HID and SUN specs differ in that Caps and Compose LED bits are swapped. Maybe better if coded in asm */
+		#define SUNKBD_LED_NUMLOCK	HID_KEYBOARD_LED_NUMLOCK
+		#define SUNKBD_LED_COMPOSE	HID_KEYBOARD_LED_CAPSLOCK
+		#define SUNKBD_LED_SCROLLLOCK	HID_KEYBOARD_LED_SCROLLLOCK
+		#define SUNKBD_LED_CAPSLOCK	HID_KEYBOARD_LED_COMPOSE
+
+		/** Convert HID LED mask to SUN masks. Perhaps it would be tighter if hand coded in asm. */
+		static inline uint8_t HID_LED_TO_SUN(uint8_t x) {
+				uint8_t r = x & (HID_KEYBOARD_LED_NUMLOCK | HID_KEYBOARD_LED_SCROLLLOCK);
+				if(x & HID_KEYBOARD_LED_CAPSLOCK)
+					r |= SUNKBD_LED_CAPSLOCK;
+				if(x & HID_KEYBOARD_LED_COMPOSE)
+					r |= SUNKBD_LED_COMPOSE;
+				return r;
+		}
+
 	/* Function Prototypes: */
 		void SetupHardware(void);
 		void HID_Task(void);
