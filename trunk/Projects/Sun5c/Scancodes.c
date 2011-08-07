@@ -1,6 +1,14 @@
 #include <avr/eeprom.h>
 #include <LUFA/Drivers/USB/Class/HID.h>
 
+/** \file
+ *  Contains the scancode table.
+ */
+
+/** The scancode table. Notice that this takes up 128 bytes of EEPROM. Also,
+ *  the macro key is translated to 0xf9 and can be remapped by the host. The
+ *  linefeed code has neither an associated key nor an HID code.
+ */
 const uint8_t EEMEM scancodes[128] = {
 	0,
 	HID_KEYBOARD_SC_STOP,                                   // 0x01

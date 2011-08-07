@@ -7,6 +7,7 @@
 */
 
 /*
+  Copyright 2011  Abbaad Haider (abbaad [at] gmail [dot] com)
   Copyright 2011  Dean Camera (dean [at] fourwalledcubicle [dot] com)
   Copyright 2010  Denver Gingerich (denver [at] ossguy [dot] com)
 
@@ -30,8 +31,7 @@
 */
 
 /** \file
- *
- *  Header file for Keyboard.c.
+ *  Header file for Sun5c.c
  */
 
 #ifndef _KEYBOARD_H_

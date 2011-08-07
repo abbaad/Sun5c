@@ -1,0 +1,75 @@
+/** \file
+ *
+ *  This file contains special DoxyGen information for the generation of the
+ *  hardware page. It is not a project source file.
+ */
+
+/** \page hardware Adapter Hardware
+ *  There are many options in chosing an AVR platform which speaks USB, but
+ *  there are only a few requirements: it must have a UART and it must have
+ *  enough space. As for the space issue, the code for this project has fewer
+ *  lines than the USB-serial converter (which can fit into less than 4K), so
+ *  a good target size is less than 4K (excluding EEPROM). Basically any USB
+ *  AVR will work, including the lower Series 2 chips.
+ *
+ *  The keyboard and the chip may be bus-powered (the keyboard works at 5VDC),
+ *  with an estimated total maximum current of 200mA (the keyboard should draw
+ *  no more than 150mA). A crystal should be used to create a stable clock for
+ *  the PLL of the USB clock as well as for the UART. A good choice is 16MHz.
+ *
+ *  The above requirements are met by a variety of pre-soldered development
+ *  boards. This project was built and tested on the
+ *  <a href="http://www.sparkfun.com/products/10277">SparkFun ATMEGA8U2 Breakout Board</a>.
+ *  Other boards might be cheaper or better suited (for example the
+ *  <a href="http://www.pjrc.com/teensy/">Teensy USB</a> or the
+ *  <a href="http://www.minimususb.com/">Minimus</a> both happen to be
+ *  cheaper and have chips larger than the 8K offered from SparkFun). The
+ *  SparkFun board is preprogrammed with a flip-compliant DFU bootloader as
+ *  well as a USB-to-Serial converter (both from other projects in the LUFA
+ *  tree). The bootloader takes up 4K, leaving 4K for the program (a smaller
+ *  2K bootloader may be used if the fuses are changed appropriately).
+ *
+ *  \image html schem_small.png "The hardware adapter (blue rectangle) can interface with any AVR with a UART"
+ *
+ *  For the UART and the keyboard to understand each other, the send and
+ *  receive signals should each be inverted. The easiest way to accomplish
+ *  this is with dedicated inverter IC such as 7404N (although other solutions
+ *  such as two RTL inverters will work as well). Along with a female 8-port
+ *  Mini-DIN connector, the inverters make up all the hardware required in
+ *  addition to the development board.
+ *
+ *  With the hardware ready, the keyboard can be tested using the USB-Serial
+ *  converter which comes pre-flashed on the SparkFun board. The keyboard is
+ *  particularly easy to test with linux. In addition to the USB-Serial
+ *  driver, ensure that the drivers for \c serport and \c sunkbd are compiled
+ *  either into the kernel or as modules. Also ensure that your system has the
+ *  \c inputattach tool (available from the 
+ *  <a href=http://sourceforge.net/projects/linuxconsole/>Linux Console</a>
+ *  project). Connect the keyboard to the adapter and plug the adapter into
+ *  the system. The keyboard will beep with a power-on self-test, and
+ *  USB-Serial converter driver should create a \c char device (probably
+ *  called \c /dev/ttyACM0 or \c /dev/ttyUSB0). With appropriate privileges,
+ *  the following command (replacing the name of the device as appropriate)
+\code
+inputattach --sunkbd /dev/ttyACM0
+\endcode
+ *  should allow the \c sunkbd driver to access the serial device. The
+ *  keyboard should now be working correctly for testing purposes.
+ *
+ *  The native serial driver has a few features which the current HID code
+ *  lacks. In particular, the Macro key works, and the driver honors the
+ *  keyboard beep and keyboard click settings. In fact, for a permanent
+ *  solution, the following udev rule should help automatically load the
+ *  driver.
+\code
+ACTION=="add", SUBSYSTEM=="tty", ATTRS{Product}=="SparkFun USBtoSerial", SYMLINK+="sunkbd", RUN+="/usr/bin/inputattach --daemon --sunkbd /dev/sunkbd"
+\endcode
+ *  (Of course the product string may be altered.)
+ *
+ *  The solution above, although adequate for testing the keyboard, has its
+ *  pitfalls. Most obvious is that the solution will only work in linux (and
+ *  even then, it will only work once udev has loaded). This makes the
+ *  keyboard useless in the BIOS, the boot menu, or recovery mode.
+ *
+ *  \image html board.jpg "The hardware adapter with case open for easy access to reset button"  
+ */

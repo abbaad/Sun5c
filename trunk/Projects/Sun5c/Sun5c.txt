@@ -4,20 +4,26 @@
  *  documentation pages. It is not a project source file.
  */
 
-/** \mainpage Keyboard Device Demo
+/** \mainpage Sun Type 5c Keyboard Adapter
  *
- *  \section Sec_Compat Demo Compatibility:
+ *  \section Sec_Compat Project Compatibility:
  *
- *  The following list indicates what microcontrollers are compatible with this demo.
+ *  The following list indicates what microcontrollers are compatible with
+ *  this project.
  *
  *  - Series 7 USB AVRs (AT90USBxxx7)
  *  - Series 6 USB AVRs (AT90USBxxx6)
  *  - Series 4 USB AVRs (ATMEGAxxU4)
  *  - Series 2 USB AVRs (AT90USBxx2, ATMEGAxxU2)
  *
+ *  Although this project has been written and tested for use with the Sun
+ *  Type 5c Keyboard (model number 3201234-02) the code should work other
+ *  versions as well (probably also the Type 4 keyboard).
+ *
  *  \section Sec_Info USB Information:
  *
- *  The following table gives a rundown of the USB utilization of this demo.
+ *  The following table gives a rundown of the USB utilization of this
+ *  project.
  *
  *  <table>
  *   <tr>
@@ -35,7 +41,8 @@
  *   <tr>
  *    <td><b>Relevant Standards:</b></td>
  *    <td>USBIF HID Specification \n
- *        USBIF HID Usage Tables</td>
+ *        USBIF HID Usage Tables \n
+ *	  <a href="http://sparc.org/standards/KBD.ps.Z">SPARC Keyboard Specification</a></td>
  *   </tr>
  *   <tr>
  *    <td><b>Usable Speeds:</b></td>
@@ -46,28 +53,22 @@
  *
  *  \section Sec_Description Project Description:
  *
- *  Keyboard demonstration application. This gives a simple reference application
- *  for implementing a USB Keyboard using the basic USB HID drivers in all modern
+ *  USB keyboard adapter for Sun Type 5c keyboard. The old Sun Type 5c keyboard
+ *  is a common favorite among enthusiasts. Unfortunately, the old-style
+ *  mini-DIN serial port is absent on modern PCs. Fortunately, however, the
+ *  hardware is simple enough to interface with a microcontroller, and AVR has
+ *  a good selection of microcontrollers with native USB support. The goal of
+ *  this project is to provide an adapter for the Sun keyboard which will
+ *  implement a USB HID keyboard device using the basic USB HID drivers in all modern
  *  OSes (i.e. no special drivers required). It is boot protocol compatible, and thus
  *  works under compatible BIOS as if it was a native keyboard (e.g. PS/2).
  *
  *  On start-up the system will automatically enumerate and function as a keyboard
- *  when the USB connection to a host is present. To use the keyboard example,
- *  manipulate the joystick to send the letters a, b, c, d and e. See the USB HID
- *  documentation for more information on sending keyboard event and key presses. Unlike
- *  other LUFA Keyboard demos, this example shows explicitly how to send multiple key presses
- *  inside the same report to the host.
+ *  when the USB connection to a host is present. All special keys will
+ *  function as intended except the Macro key which has no HID counterpart.
  *
- *  \section Sec_Options Project Options
- *
- *  The following defines can be found in this demo, which can control the demo behaviour when defined, or changed in value.
- *
- *  <table>
- *   <tr>
- *    <td>
- *     None
- *    </td>
- *   </tr>
- *  </table>
+ *  \section Sec_SeeAlso See Also:
+ *  Learn more about the \subpage keyboard "keyboard" itself and then how to
+ *  build the \subpage hardware "hardware".
  */
 

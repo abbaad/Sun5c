@@ -7,6 +7,7 @@
 */
 
 /*
+  Copyright 2011  Abbaad Haider (abbaad [at] gmail [dot] com)
   Copyright 2011  Dean Camera (dean [at] fourwalledcubicle [dot] com)
   Copyright 2010  Denver Gingerich (denver [at] ossguy [dot] com)
 
@@ -30,9 +31,9 @@
 */
 
 /** \file
- *
- *  Main source file for the Keyboard demo. This file contains the main tasks of the demo and
- *  is responsible for the initial application hardware configuration.
+ *  Main source file for the adapter project.
+ *  This file contains the main tasks of the project and is responsible for
+ *  the initial application hardware configuration.
  */
 
 #include <string.h>

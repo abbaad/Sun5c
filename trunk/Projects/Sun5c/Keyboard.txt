@@ -1,0 +1,43 @@
+/** \file
+ *
+ *  This file contains special DoxyGen information for the generation of the
+ *  keyboard page. It is not a project source file.
+ */
+
+/** \page keyboard Sun Type 5c Keyboard
+ *
+ *  At first sight, the Type 5c has a few differences in layout from a
+ *  &ldquo;standard&rdquo; US keyboard. The most effectual is the Control key
+ *  above the left Shift (with Caps Lock instead below). Meta keys are next to
+ *  the space bar rather than Alt. The Menu key is Compose (and has an LED),
+ *  and there is no right Control key. The placement of keys for Esc, grave,
+ *  backspace, and backslash is altered. Additionally, the placement of LED
+ *  indicators is on the keys themselves. Moreover, there are 16 extra keys at
+ *  the periphery of the layout (the blank key is traditionally for recording
+ *  keyboard macros).
+ *
+ *  \image html keyboard.jpg "The Sun Type 5c Keyboard, model number 3201234-02"
+ *
+ *  According to the <a href="http://sparc.org/standards/KBD.ps.Z">specification</a>,
+ *  the keyboard speaks CS8 serial using inverted TTL logic at 1200 baud full
+ *  duplex. This is done over an 8-pin mini-DIN connector. Almost all
+ *  communication uses a single byte, and there are only a handful of commands
+ *  from the system to the keyboard. The keyboard runs at 5VDC and draws a
+ *  maximum of 150mA of current.
+ *
+ *  While the female mini-DIN connector is easy to come by, most AVR chips do
+ *  not have a UART with native inverted logic support. It is much easier
+ *  simply to use a dedicated inverter chip (or even a couple of RTL
+ *  inverters) than to write a negative logic software UART.
+ *
+ *  \image html closeup.jpg "Closeup of the mini-DIN connector. Notice the connector is keyed with non-uniform pin spacing in the middle row (pin 4 is closer to pin 3 than to pin 5)"
+ *
+ *  Although the specification indicates that the keyboard hardware should
+ *  support N-key rollover (i.e., all key depressions and releases correctly
+ *  detected in any sequence regardless of how many keys are being depressed),
+ *  in informal tests, keypresses are not often registered when depressing
+ *  many keys next to each other. Nevertheless, it is possible to send at
+ *  least 10 keypresses successfully; thus, the adapter will be able to
+ *  accomodate 10 keys before sending rollover (feel free to change this in
+ *  case of polydactyly).
+ */
