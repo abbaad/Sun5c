@@ -6,6 +6,11 @@
 
 /** \mainpage Sun Type 5c Keyboard Adapter
  *
+ *  \section Sec_Source Source Code
+ *
+ *  The latest source code for this project is available at
+ *  <a href=http://github.com/abbaad/Sun5c>http://github.com/abbaad/Sun5c</a>.
+ *
  *  \section Sec_Compat Project Compatibility:
  *
  *  The following list indicates what microcontrollers are compatible with
